@@ -5,7 +5,11 @@ import { Row, Col, Image, ListGroup, Card, Button, Form } from "react-bootstrap"
 import Rating from "../components/Rating"
 import Message from "../components/Message"
 import Loader from "../components/Loader"
-import { listProductDetails } from "../actions/productActions"
+import {
+    listProductDetails,
+    listProductRatingDetails,
+    listSearchReviews,
+} from "../actions/productActions"
 import { toast } from "react-toastify"
 
 const ProductScreen = () => {
@@ -14,13 +18,66 @@ const ProductScreen = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const params = useParams()
-    const { id: productId } = params
+    const {
+        id: productId,
+        rating = 1,
+        order = "desc",
+        paginate = 1,
+        perPage = 5,
+        pageNumber = 1,
+    } = params
 
     const productDetails = useSelector((state) => state.productDetails)
     const { loading, error, product } = productDetails
 
+    const productRatingDetails = useSelector(
+        (state) => state.productRatingDetails
+    )
+    const {
+        loading: loadingRatingDetails,
+        error: errorRatingDetails,
+        rating: ratingDetails,
+    } = productRatingDetails
+
+    const productListSearchReview = useSelector(
+        (state) => state.productListSearchReview
+    )
+    const {
+        loading: loadingReview,
+        error: errorReview,
+        reviews,
+        page,
+        pages,
+        from,
+        to,
+        total,
+        per_page,
+    } = productListSearchReview
+
+    const getFilterUrl = (filter) => {
+        const filterProductId = filter.productId || productId
+        const filterRating = filter.rating || rating
+        const filterOrder = filter.order || order
+        const filterPaginate = filter.paginate || paginate
+        const filterPerPage = filter.perPage || perPage
+        const filterPage = filter.page || pageNumber
+
+        return `/product/${filterProductId}/rating/${filterRating}/order/${filterOrder}/paginate/${filterPaginate}/perPage/${filterPerPage}/pageNumber/${filterPage}`
+    }
+
     useEffect(() => {
         dispatch(listProductDetails(productId))
+        dispatch(listProductRatingDetails(productId))
+        dispatch(
+            listSearchReviews({
+                productId: productId,
+                rating: rating !== 1 ? rating : 1,
+                sortOrder: order !== "desc" ? order : "desc",
+                paginate: paginate !== 1 ? paginate : 1,
+                perPage: perPage !== 5 ? perPage : 5,
+                page: pageNumber !== 1 ? pageNumber : 1,
+            })
+        )
     }, [dispatch, productId])
 
     const addToCartHandler = () => {

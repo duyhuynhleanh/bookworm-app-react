@@ -1,21 +1,14 @@
 import React, { useEffect } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
+import MyPagination from "../components/MyPagination"
 import { useDispatch, useSelector } from "react-redux"
 import Loader from "../components/Loader"
-import {
-    Row,
-    Col,
-    ListGroup,
-    Container,
-    Form,
-    Pagination,
-} from "react-bootstrap"
+import { Row, Col, ListGroup, Container, Form } from "react-bootstrap"
 import Message from "../components/Message"
 import { listSearchProducts } from "../actions/productActions"
 import Rating from "../components/Rating"
 import { ratings } from "../util"
 import Product from "../components/Product"
-import { LinkContainer } from "react-router-bootstrap"
 
 const SearchScreen = () => {
     const navigate = useNavigate()
@@ -25,7 +18,7 @@ const SearchScreen = () => {
         category = "all",
         author = "all",
         order = "sale",
-        rating = 0,
+        rating = 1,
         perPage = 5,
         pageNumber = 1,
     } = useParams()
@@ -62,7 +55,7 @@ const SearchScreen = () => {
                 category: category !== "all" ? category : "",
                 author: author !== "all" ? author : "",
                 sortOrder: order !== "sale" ? order : "sale",
-                rating: rating !== 0 ? rating : 0,
+                rating: rating !== 1 ? rating : 1,
                 perPage: perPage !== 5 ? perPage : 5,
                 page: pageNumber !== 1 ? pageNumber : 1,
             })
@@ -243,7 +236,7 @@ const SearchScreen = () => {
                                     {pages > 1 && (
                                         <Row className='align-items-center'>
                                             <Col lg='auto'>
-                                                <Pagination>
+                                                {/* <Pagination>
                                                     {[
                                                         ...Array(pages).keys(),
                                                     ].map((x) => (
@@ -268,7 +261,18 @@ const SearchScreen = () => {
                                                             </Pagination.Item>
                                                         </LinkContainer>
                                                     ))}
-                                                </Pagination>
+                                                </Pagination> */}
+                                                <MyPagination
+                                                    totPages={pages}
+                                                    currentPage={page}
+                                                    pageClicked={(ele) => {
+                                                        navigate(
+                                                            getFilterUrl({
+                                                                page: ele,
+                                                            })
+                                                        )
+                                                    }}
+                                                ></MyPagination>
                                             </Col>
                                         </Row>
                                     )}

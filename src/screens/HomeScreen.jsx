@@ -9,7 +9,6 @@ const HomeScreen = () => {
         <>
             <Row>
                 <h1>On Sale</h1>
-
                 <Link
                     className='btn btn-dark my-2 ml-auto'
                     to='/search/keyword/all/category/all/author/all/rating/0/order/sale/perPage/5/pageNumber/1'

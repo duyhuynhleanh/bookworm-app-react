@@ -9,8 +9,14 @@ import {
     PRODUCT_DETAILS_FAIL,
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
+    PRODUCT_RATING_DETAILS_FAIL,
+    PRODUCT_RATING_DETAILS_REQUEST,
+    PRODUCT_RATING_DETAILS_SUCCESS,
     PRODUCT_SEARCH_FAIL,
     PRODUCT_SEARCH_REQUEST,
+    PRODUCT_SEARCH_REVIEW_FAIL,
+    PRODUCT_SEARCH_REVIEW_REQUEST,
+    PRODUCT_SEARCH_REVIEW_SUCCESS,
     PRODUCT_SEARCH_SUCCESS,
     PRODUCT_TOP_DISCOUNT_FAIL,
     PRODUCT_TOP_DISCOUNT_REQUEST,
@@ -53,7 +59,7 @@ export const listSearchProducts =
         category = "",
         author = "",
         sortOrder = "sale",
-        rating = 0,
+        rating = 1,
         perPage = 5,
         page = 1,
     }) =>
@@ -72,6 +78,38 @@ export const listSearchProducts =
         } catch (error) {
             dispatch({
                 type: PRODUCT_SEARCH_FAIL,
+                payload:
+                    error.response && error.response.data.message
+                        ? error.response.data.message
+                        : error.message,
+            })
+        }
+    }
+
+export const listSearchReviews =
+    ({
+        productId = "",
+        rating = 1,
+        sortOrder = "desc",
+        paginate = 1,
+        perPage = 5,
+        page = 1,
+    }) =>
+    async (dispatch) => {
+        try {
+            dispatch({ type: PRODUCT_SEARCH_REVIEW_REQUEST })
+
+            const { data } = await axios.get(
+                `/api/search/${productId}/reviews?rating=${rating}&sortOrder=${sortOrder}&perPage=${perPage}&paginate=${paginate}&page=${page}`
+            )
+
+            dispatch({
+                type: PRODUCT_SEARCH_REVIEW_SUCCESS,
+                payload: data,
+            })
+        } catch (error) {
+            dispatch({
+                type: PRODUCT_SEARCH_REVIEW_FAIL,
                 payload:
                     error.response && error.response.data.message
                         ? error.response.data.message
@@ -171,6 +209,25 @@ export const getAllAuthors = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: FETCH_AUTHORS_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const listProductRatingDetails = (id) => async (dispatch) => {
+    try {
+        dispatch({ type: PRODUCT_RATING_DETAILS_REQUEST })
+        const { data } = await axios.get(`/api/products/${id}/reviews`)
+        dispatch({
+            type: PRODUCT_RATING_DETAILS_SUCCESS,
+            payload: data,
+        })
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_RATING_DETAILS_FAIL,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

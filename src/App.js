@@ -50,6 +50,10 @@ const App = () => {
                             path='/product/:id'
                             element={<ProductScreen />}
                         />
+                        <Route
+                            path='/product/:id/rating/:rating/order/:order/paginate/:paginate/perPage/:perPage/pageNumber/:pageNumber'
+                            element={<ProductScreen />}
+                        />
                         <Route path='/cart' element={<CartScreen />}></Route>
                         <Route
                             path='/cart/:id'

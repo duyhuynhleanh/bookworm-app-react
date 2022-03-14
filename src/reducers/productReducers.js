@@ -8,8 +8,14 @@ import {
     PRODUCT_DETAILS_FAIL,
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
+    PRODUCT_RATING_DETAILS_FAIL,
+    PRODUCT_RATING_DETAILS_REQUEST,
+    PRODUCT_RATING_DETAILS_SUCCESS,
     PRODUCT_SEARCH_FAIL,
     PRODUCT_SEARCH_REQUEST,
+    PRODUCT_SEARCH_REVIEW_FAIL,
+    PRODUCT_SEARCH_REVIEW_REQUEST,
+    PRODUCT_SEARCH_REVIEW_SUCCESS,
     PRODUCT_SEARCH_SUCCESS,
     PRODUCT_TOP_DISCOUNT_FAIL,
     PRODUCT_TOP_DISCOUNT_REQUEST,
@@ -51,6 +57,31 @@ export const productListSearchReducer = (state = { products: [] }, action) => {
                 per_page: action.payload.per_page,
             }
         case PRODUCT_SEARCH_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const productListSearchReviewReducer = (
+    state = { reviews: [] },
+    action
+) => {
+    switch (action.type) {
+        case PRODUCT_SEARCH_REVIEW_REQUEST:
+            return { loading: true, products: [] }
+        case PRODUCT_SEARCH_REVIEW_SUCCESS:
+            return {
+                loading: false,
+                reviews: action.payload.data,
+                page: action.payload.current_page,
+                pages: action.payload.last_page,
+                from: action.payload.from,
+                to: action.payload.to,
+                total: action.payload.total,
+                per_page: action.payload.per_page,
+            }
+        case PRODUCT_SEARCH_REVIEW_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state
@@ -115,16 +146,26 @@ export const productTopPopularReducer = (
     }
 }
 
-export const productDetailsReducer = (
-    state = { product: { reviews: [] } },
-    action
-) => {
+export const productDetailsReducer = (state = { product: {} }, action) => {
     switch (action.type) {
         case PRODUCT_DETAILS_REQUEST:
             return { loading: true, ...state }
         case PRODUCT_DETAILS_SUCCESS:
             return { loading: false, product: action.payload }
         case PRODUCT_DETAILS_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const productRatingDetailsReducer = (state = { rating: {} }, action) => {
+    switch (action.type) {
+        case PRODUCT_RATING_DETAILS_REQUEST:
+            return { loading: true, ...state }
+        case PRODUCT_RATING_DETAILS_SUCCESS:
+            return { loading: false, rating: action.payload }
+        case PRODUCT_RATING_DETAILS_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state
