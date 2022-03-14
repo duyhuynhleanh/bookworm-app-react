@@ -2,12 +2,21 @@ import React, { useEffect } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Loader from "../components/Loader"
-import { Row, Col, ListGroup, Card, Image } from "react-bootstrap"
+import {
+    Row,
+    Col,
+    ListGroup,
+    Container,
+    Form,
+    Pagination,
+} from "react-bootstrap"
 import Message from "../components/Message"
 import { listSearchProducts } from "../actions/productActions"
 import Rating from "../components/Rating"
 import { ratings } from "../util"
 import Product from "../components/Product"
+import { LinkContainer } from "react-router-bootstrap"
+import MyPagination from "../components/MyPagination"
 
 const SearchScreen = () => {
     const navigate = useNavigate()
@@ -19,7 +28,7 @@ const SearchScreen = () => {
         order = "sale",
         rating = 0,
         perPage = 5,
-        page = 1,
+        pageNumber = 1,
     } = useParams()
     const categoryList = useSelector((state) => state.categoryList)
     const {
@@ -32,7 +41,8 @@ const SearchScreen = () => {
     const { loading: loadingAuthors, error: errorAuthors, authors } = authorList
 
     const productListSearch = useSelector((state) => state.productListSearch)
-    const { loading, error, products } = productListSearch
+    const { loading, error, products, from, to, total, per_page, page, pages } =
+        productListSearch
 
     const getFilterUrl = (filter) => {
         const filterKeyword = filter.keyword || keyword
@@ -41,9 +51,9 @@ const SearchScreen = () => {
         const filterRating = filter.rating || rating
         const filterOrder = filter.order || order
         const filterPerPage = filter.perPage || perPage
-        const filterPage = filter.page || page
+        const filterPage = filter.page || pageNumber
 
-        return `/search/keyword/${filterKeyword}/category/${filterCategory}/author/${filterAuthor}/rating/${filterRating}/order/${filterOrder}/perPage/${filterPerPage}/page/${filterPage}`
+        return `/search/keyword/${filterKeyword}/category/${filterCategory}/author/${filterAuthor}/rating/${filterRating}/order/${filterOrder}/perPage/${filterPerPage}/pageNumber/${filterPage}`
     }
 
     useEffect(() => {
@@ -55,10 +65,19 @@ const SearchScreen = () => {
                 sortOrder: order !== "sale" ? order : "sale",
                 rating: rating !== 0 ? rating : 0,
                 perPage: perPage !== 5 ? perPage : 5,
-                page: page !== 1 ? page : 1,
+                page: pageNumber !== 1 ? pageNumber : 1,
             })
         )
-    }, [keyword, category, author, order, rating, perPage, page, dispatch])
+    }, [
+        keyword,
+        category,
+        author,
+        order,
+        rating,
+        perPage,
+        pageNumber,
+        dispatch,
+    ])
     return loading ? (
         <Loader />
     ) : error ? (
@@ -66,9 +85,15 @@ const SearchScreen = () => {
     ) : (
         <>
             <Row>
-                <div className='ml-auto'>
-                    Sort by:
-                    <select
+                <Col md={8}>
+                    <h3>
+                        Showing {Number(per_page)} results from {from} to {to}{" "}
+                        of {total}
+                    </h3>
+                </Col>
+                <Col md={2}>
+                    <Form.Control
+                        as='select'
                         value={order}
                         onChange={(e) => {
                             navigate(getFilterUrl({ order: e.target.value }))
@@ -82,13 +107,28 @@ const SearchScreen = () => {
                         <option value='priceDESC'>
                             Sort by price high to low
                         </option>
-                    </select>
-                </div>
+                    </Form.Control>
+                </Col>
+                <Col md={2}>
+                    <Form.Control
+                        as='select'
+                        value={perPage}
+                        onChange={(e) => {
+                            navigate(getFilterUrl({ perPage: e.target.value }))
+                        }}
+                    >
+                        <option value={5}>Show 5</option>
+                        <option value={15}>Show 10</option>
+                        <option value={20}>Show 20</option>
+                        <option value={25}>Show 25</option>
+                    </Form.Control>
+                </Col>
             </Row>
             <Row>
                 <Col sm={4} md={3} lg={2}>
-                    <h3>Category</h3>
-                    <div>
+                    <h3>Filter:</h3>
+                    <>
+                        <h5>By category</h5>
                         {loadingCategories ? (
                             <Loader />
                         ) : errorCategories ? (
@@ -96,8 +136,8 @@ const SearchScreen = () => {
                                 {errorCategories}
                             </Message>
                         ) : (
-                            <ListGroup>
-                                <ListGroup.Item>
+                            <ListGroup variant='flush'>
+                                <ListGroup.Item as='button'>
                                     <Link
                                         className={
                                             "all" === category ? "active" : ""
@@ -108,7 +148,7 @@ const SearchScreen = () => {
                                     </Link>
                                 </ListGroup.Item>
                                 {categories.map((c) => (
-                                    <ListGroup.Item key={c.id}>
+                                    <ListGroup.Item as='button' key={c.id}>
                                         <Link
                                             className={
                                                 c.id === category
@@ -125,39 +165,47 @@ const SearchScreen = () => {
                                 ))}
                             </ListGroup>
                         )}
-                    </div>
-                    <div>
-                        <h3>Author</h3>
-                        <ListGroup>
-                            <ListGroup.Item>
-                                <Link
-                                    className={"all" === author ? "active" : ""}
-                                    to={getFilterUrl({ author: "all" })}
-                                >
-                                    Any
-                                </Link>
-                            </ListGroup.Item>
-                            {authors.map((a) => (
-                                <ListGroup.Item key={a.id}>
+                    </>
+                    <>
+                        <h5>By author</h5>
+                        {loadingAuthors ? (
+                            <Loader />
+                        ) : errorAuthors ? (
+                            <Message variant='danger'>{errorAuthors}</Message>
+                        ) : (
+                            <ListGroup variant='flush'>
+                                <ListGroup.Item as='button'>
                                     <Link
-                                        to={getFilterUrl({
-                                            author: a.id,
-                                        })}
                                         className={
-                                            a.id === author ? "active" : ""
+                                            "all" === author ? "active" : ""
                                         }
+                                        to={getFilterUrl({ author: "all" })}
                                     >
-                                        {a.author_name}
+                                        Any
                                     </Link>
                                 </ListGroup.Item>
-                            ))}
-                        </ListGroup>
-                    </div>
-                    <div>
-                        <h3>Rating</h3>
-                        <ListGroup>
+                                {authors.map((a) => (
+                                    <ListGroup.Item as='button' key={a.id}>
+                                        <Link
+                                            to={getFilterUrl({
+                                                author: a.id,
+                                            })}
+                                            className={
+                                                a.id === author ? "active" : ""
+                                            }
+                                        >
+                                            {a.author_name}
+                                        </Link>
+                                    </ListGroup.Item>
+                                ))}
+                            </ListGroup>
+                        )}
+                    </>
+                    <>
+                        <h5>By rating</h5>
+                        <ListGroup variant='flush'>
                             {ratings.map((r) => (
-                                <ListGroup.Item key={r.name}>
+                                <ListGroup.Item as='button' key={r.name}>
                                     <Link
                                         to={getFilterUrl({ rating: r.rating })}
                                         className={
@@ -167,14 +215,14 @@ const SearchScreen = () => {
                                         }
                                     >
                                         <Rating
-                                            text={" & up"}
                                             value={r.rating}
+                                            text='& up'
                                         ></Rating>
                                     </Link>
                                 </ListGroup.Item>
                             ))}
                         </ListGroup>
-                    </div>
+                    </>
                 </Col>
                 <Col sm={8} md={9} lg={10}>
                     {loading ? (
@@ -183,20 +231,54 @@ const SearchScreen = () => {
                         <Message variant='danger'>{error}</Message>
                     ) : (
                         <>
-                            <div>{products?.length} Results</div>
                             {products?.length > 0 ? (
-                                <Row sm={2} md={3} lg={4}>
-                                    {products.map((product) => (
-                                        <Link
-                                            key={product.id}
-                                            to={`/product/${product.id}`}
-                                        >
-                                            <Product product={product} />
-                                        </Link>
-                                    ))}
-                                </Row>
+                                <>
+                                    <Row sm={2} md={3} lg={4}>
+                                        {products.map((product) => (
+                                            <Container key={product.id}>
+                                                <Product product={product} />
+                                            </Container>
+                                        ))}
+                                    </Row>
+
+                                    {pages > 1 && (
+                                        // <Pagination>
+                                        //     {[...Array(pages).keys()].map(
+                                        //         (x) => (
+                                        //             <LinkContainer
+                                        //                 className={
+                                        //                     x + 1 === page
+                                        //                         ? "active"
+                                        //                         : ""
+                                        //                 }
+                                        //                 key={x + 1}
+                                        //                 to={getFilterUrl({
+                                        //                     page: x + 1,
+                                        //                 })}
+                                        //             >
+                                        //                 <Pagination.Item
+                                        //                     active={
+                                        //                         x + 1 === page
+                                        //                     }
+                                        //                 >
+                                        //                     {x + 1}
+                                        //                 </Pagination.Item>
+                                        //             </LinkContainer>
+                                        //         )
+                                        //     )}
+                                        // </Pagination>
+                                        <MyPagination
+                                            totPages={pages}
+                                            currentPage={page}
+                                            pageClicked={(nxtPage) => {
+                                                getFilterUrl({ page: nxtPage })
+                                                console.log(nxtPage)
+                                            }}
+                                        />
+                                    )}
+                                </>
                             ) : (
-                                <Message>No Product Found</Message>
+                                <Message>No Products Found</Message>
                             )}
                         </>
                     )}

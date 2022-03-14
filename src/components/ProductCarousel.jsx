@@ -1,9 +1,8 @@
 import React, { useEffect } from "react"
-import { Carousel, Row, Col } from "react-bootstrap"
+import { Carousel, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import Loader from "./Loader"
 import Message from "./Message"
-import { Link } from "react-router-dom"
 import Product from "./Product"
 import { listTopDiscountProducts } from "../actions/productActions"
 
@@ -30,7 +29,7 @@ const ProductCarousel = () => {
 
         return resultArray
     }, [])
-    return loading ? (
+    return products && loading ? (
         <Loader />
     ) : error ? (
         <Message variant='danger'>{error}</Message>
@@ -40,11 +39,9 @@ const ProductCarousel = () => {
                 <Carousel.Item as='div' key={chunk[0].id}>
                     <Row sm={2} md={3} lg={4}>
                         {chunk.map((product) => (
-                            <Col key={product.id}>
-                                <Link to={`/product/${product.id}`}>
-                                    <Product product={product} />
-                                </Link>
-                            </Col>
+                            <div key={product.id}>
+                                <Product product={product} />
+                            </div>
                         ))}
                     </Row>
                 </Carousel.Item>

@@ -1,9 +1,8 @@
 import React, { useEffect } from "react"
-import { Tabs, Tab, Row, Col, Container } from "react-bootstrap"
+import { Tabs, Tab, Row, Col } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import Loader from "./Loader"
 import Message from "./Message"
-import { Link } from "react-router-dom"
 import Product from "./Product"
 import {
     listTopPopularProducts,
@@ -36,68 +35,56 @@ const ProductTabs = () => {
         dispatch(listTopPopularProducts())
     }, [dispatch])
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <Tabs
-                        defaultActiveKey='recommend'
-                        id='id="uncontrolled-tab-example"'
-                    >
-                        <Tab eventKey='recommend' title='Recommend'>
-                            {loadingRecommend ? (
-                                <Loader />
-                            ) : errorRecommend ? (
-                                <Message variant='danger'>
-                                    {errorRecommend}
-                                </Message>
-                            ) : (
-                                <Row>
-                                    {recommendProducts.map((product) => (
-                                        <Col
-                                            key={product.id}
-                                            sm={12}
-                                            md={6}
-                                            lg={4}
-                                            xl={3}
-                                        >
-                                            <Link to={`/product/${product.id}`}>
-                                                <Product product={product} />
-                                            </Link>
-                                        </Col>
-                                    ))}
-                                </Row>
-                            )}
-                        </Tab>
+        <>
+            <Tabs
+                defaultActiveKey='recommend'
+                id='id="uncontrolled-tab-example"'
+            >
+                <Tab eventKey='recommend' title='Recommend'>
+                    {loadingRecommend ? (
+                        <Loader />
+                    ) : errorRecommend ? (
+                        <Message variant='danger'>{errorRecommend}</Message>
+                    ) : (
+                        <Row>
+                            {recommendProducts.map((product) => (
+                                <Col
+                                    key={product.id}
+                                    sm={12}
+                                    md={6}
+                                    lg={4}
+                                    xl={3}
+                                >
+                                    <Product product={product} />
+                                </Col>
+                            ))}
+                        </Row>
+                    )}
+                </Tab>
 
-                        <Tab eventKey='Popular' title='Popular'>
-                            {loadingPopular ? (
-                                <Loader />
-                            ) : errorPopular ? (
-                                <Message variant='danger'>
-                                    {errorPopular}
-                                </Message>
-                            ) : (
-                                <Row>
-                                    {popularProducts.map((product) => (
-                                        <Col
-                                            key={product.id}
-                                            sm={12}
-                                            md={6}
-                                            lg={4}
-                                            xl={3}
-                                        >
-                                            <Link to={`/product/${product.id}`}>
-                                                <Product product={product} />
-                                            </Link>
-                                        </Col>
-                                    ))}
-                                </Row>
-                            )}
-                        </Tab>
-                    </Tabs>
-                </Col>
-            </Row>
-        </Container>
+                <Tab eventKey='Popular' title='Popular'>
+                    {loadingPopular ? (
+                        <Loader />
+                    ) : errorPopular ? (
+                        <Message variant='danger'>{errorPopular}</Message>
+                    ) : (
+                        <Row>
+                            {popularProducts.map((product) => (
+                                <Col
+                                    key={product.id}
+                                    sm={12}
+                                    md={6}
+                                    lg={4}
+                                    xl={3}
+                                >
+                                    <Product product={product} />
+                                </Col>
+                            ))}
+                        </Row>
+                    )}
+                </Tab>
+            </Tabs>
+        </>
     )
 }
 

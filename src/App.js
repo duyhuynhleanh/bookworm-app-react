@@ -64,7 +64,7 @@ const App = () => {
                             exact
                         ></Route>
                         <Route
-                            path='search/keyword/:keyword/category/:category/author/:author/rating/:rating/order/:order/perPage/:perPage/page/:page'
+                            path='search/keyword/:keyword/category/:category/author/:author/rating/:rating/order/:order/perPage/:perPage/pageNumber/:pageNumber'
                             element={<SearchScreen />}
                         ></Route>
                     </Routes>
