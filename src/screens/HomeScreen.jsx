@@ -12,7 +12,7 @@ const HomeScreen = () => {
 
                 <Link
                     className='btn btn-dark my-2 ml-auto'
-                    to='search/keyword/all'
+                    to='/search/keyword/all/category/all/author/all/rating/0/order/sale/perPage/5/pageNumber/1'
                 >
                     View All
                 </Link>

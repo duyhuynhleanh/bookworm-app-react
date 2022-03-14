@@ -16,7 +16,6 @@ import Rating from "../components/Rating"
 import { ratings } from "../util"
 import Product from "../components/Product"
 import { LinkContainer } from "react-router-bootstrap"
-import MyPagination from "../components/MyPagination"
 
 const SearchScreen = () => {
     const navigate = useNavigate()
@@ -242,39 +241,36 @@ const SearchScreen = () => {
                                     </Row>
 
                                     {pages > 1 && (
-                                        // <Pagination>
-                                        //     {[...Array(pages).keys()].map(
-                                        //         (x) => (
-                                        //             <LinkContainer
-                                        //                 className={
-                                        //                     x + 1 === page
-                                        //                         ? "active"
-                                        //                         : ""
-                                        //                 }
-                                        //                 key={x + 1}
-                                        //                 to={getFilterUrl({
-                                        //                     page: x + 1,
-                                        //                 })}
-                                        //             >
-                                        //                 <Pagination.Item
-                                        //                     active={
-                                        //                         x + 1 === page
-                                        //                     }
-                                        //                 >
-                                        //                     {x + 1}
-                                        //                 </Pagination.Item>
-                                        //             </LinkContainer>
-                                        //         )
-                                        //     )}
-                                        // </Pagination>
-                                        <MyPagination
-                                            totPages={pages}
-                                            currentPage={page}
-                                            pageClicked={(nxtPage) => {
-                                                getFilterUrl({ page: nxtPage })
-                                                console.log(nxtPage)
-                                            }}
-                                        />
+                                        <Row className='align-items-center'>
+                                            <Col lg='auto'>
+                                                <Pagination>
+                                                    {[
+                                                        ...Array(pages).keys(),
+                                                    ].map((x) => (
+                                                        <LinkContainer
+                                                            className={
+                                                                x + 1 === page
+                                                                    ? "active"
+                                                                    : ""
+                                                            }
+                                                            key={x + 1}
+                                                            to={getFilterUrl({
+                                                                page: x + 1,
+                                                            })}
+                                                        >
+                                                            <Pagination.Item
+                                                                active={
+                                                                    x + 1 ===
+                                                                    page
+                                                                }
+                                                            >
+                                                                {x + 1}
+                                                            </Pagination.Item>
+                                                        </LinkContainer>
+                                                    ))}
+                                                </Pagination>
+                                            </Col>
+                                        </Row>
                                     )}
                                 </>
                             ) : (

@@ -64,7 +64,7 @@ const RegisterScreen = () => {
         if (userInfo) {
             navigate(redirect)
         }
-    }, [userInfo, redirect])
+    }, [userInfo, redirect, navigate])
 
     return (
         <FormContainer>

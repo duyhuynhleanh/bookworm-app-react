@@ -24,7 +24,6 @@ const ProductScreen = () => {
     }, [dispatch, productId])
 
     const addToCartHandler = () => {
-        // dispatch(addToCart(product.id, qty))
         toast.configure()
         toast(`Added ${qty} product to the cart`, {
             position: "bottom-right",
@@ -43,7 +42,7 @@ const ProductScreen = () => {
             <Link className='btn btn-light my-3' to='/'>
                 Trở lại
             </Link>
-            {loading ? (
+            {product && loading ? (
                 <Loader />
             ) : error ? (
                 <Message variant='danger'>{error}</Message>

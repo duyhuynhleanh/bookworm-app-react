@@ -29,7 +29,7 @@ const ProductCarousel = () => {
 
         return resultArray
     }, [])
-    return products && loading ? (
+    return products.length > 0 && loading ? (
         <Loader />
     ) : error ? (
         <Message variant='danger'>{error}</Message>

@@ -8,6 +8,7 @@ import HomeScreen from "./screens/HomeScreen"
 import RegisterScreen from "./screens/RegisterScreen"
 import AboutScreen from "./screens/AboutScreen"
 import Message from "./components/Message"
+import Loader from "./components/Loader"
 import ProductScreen from "./screens/ProductScreen"
 import CartScreen from "./screens/CartScreen"
 import ProfileScreen from "./screens/ProfileScreen"
@@ -32,6 +33,15 @@ const App = () => {
     return (
         <Router>
             <Header />
+            {categories.length > 0 && loadingCategories ? (
+                <Loader />
+            ) : errorCategories ? (
+                <Message variant='danger'>{errorCategories}</Message>
+            ) : authors.length > 0 && loadingAuthors ? (
+                <Loader />
+            ) : errorAuthors ? (
+                <Message variant='danger'>{errorAuthors}</Message>
+            ) : null}
             <main className='py-3' style={{ marginTop: "95px" }}>
                 <Container>
                     <Routes>

@@ -53,8 +53,9 @@ const Header = () => {
                     fixed='top'
                 >
                     <Container>
-                        <Navbar.Brand>BOOKWORM</Navbar.Brand>
-
+                        <LinkContainer to='/'>
+                            <Navbar.Brand>BOOKWORM</Navbar.Brand>
+                        </LinkContainer>
                         <Navbar.Toggle aria-controls='basic-navbar-nav' />
                         <Navbar.Collapse id='basic-navbar-nav'>
                             <SearchBox />
@@ -69,7 +70,7 @@ const Header = () => {
                                 <LinkContainer to='/'>
                                     <Nav.Link eventKey='default'>Home</Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to='/search/keyword/all'>
+                                <LinkContainer to='/search/keyword/all/category/all/author/all/rating/0/order/sale/perPage/5/pageNumber/1'>
                                     <Nav.Link eventKey='products'>
                                         Shop
                                     </Nav.Link>

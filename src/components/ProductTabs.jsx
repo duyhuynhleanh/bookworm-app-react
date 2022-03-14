@@ -41,7 +41,7 @@ const ProductTabs = () => {
                 id='id="uncontrolled-tab-example"'
             >
                 <Tab eventKey='recommend' title='Recommend'>
-                    {loadingRecommend ? (
+                    {recommendProducts?.length > 0 && loadingRecommend ? (
                         <Loader />
                     ) : errorRecommend ? (
                         <Message variant='danger'>{errorRecommend}</Message>
@@ -63,7 +63,7 @@ const ProductTabs = () => {
                 </Tab>
 
                 <Tab eventKey='Popular' title='Popular'>
-                    {loadingPopular ? (
+                    {popularProducts.length > 0 && loadingPopular ? (
                         <Loader />
                     ) : errorPopular ? (
                         <Message variant='danger'>{errorPopular}</Message>
