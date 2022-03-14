@@ -32,7 +32,7 @@ const App = () => {
     return (
         <Router>
             <Header />
-            <main className='py-3'>
+            <main className='py-3' style={{ marginTop: "95px" }}>
                 <Container>
                     <Routes>
                         <Route path='/' element={<HomeScreen />} />
@@ -49,7 +49,7 @@ const App = () => {
                         <Route path='/profile' element={<ProfileScreen />} />
                         <Route path='/about' element={<AboutScreen />} />
                         <Route
-                            path='/search/keyword'
+                            path='/search/keyword/all'
                             element={<SearchScreen />}
                             exact
                         ></Route>
@@ -64,14 +64,8 @@ const App = () => {
                             exact
                         ></Route>
                         <Route
-                            path='/search/category/:category/keyword/:keyword'
+                            path='search/keyword/:keyword/category/:category/author/:author/rating/:rating/order/:order/perPage/:perPage/page/:page'
                             element={<SearchScreen />}
-                            exact
-                        ></Route>
-                        <Route
-                            path='/search/category/:category/keyword/:keyword/author/:author/order/:order/rating/:rating/perPage/:perPage/page/:page'
-                            element={<SearchScreen />}
-                            exact
                         ></Route>
                     </Routes>
                 </Container>

@@ -33,8 +33,8 @@ const ProfileScreen = () => {
             navigate("/")
         } else {
             if (!user) {
-                dispatch({ type: USER_UPDATE_PROFILE_RESET })
                 dispatch(getUserDetails())
+                dispatch({ type: USER_UPDATE_PROFILE_RESET })
             } else {
                 setFirstName(user.first_name)
                 setLastName(user.last_name)

@@ -45,11 +45,16 @@ const Header = () => {
     return (
         <>
             <header>
-                <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
+                <Navbar
+                    bg='dark'
+                    variant='dark'
+                    expand='lg'
+                    collapseOnSelect
+                    fixed='top'
+                >
                     <Container>
-                        <LinkContainer to='/'>
-                            <Navbar.Brand>BOOKWORM</Navbar.Brand>
-                        </LinkContainer>
+                        <Navbar.Brand>BOOKWORM</Navbar.Brand>
+
                         <Navbar.Toggle aria-controls='basic-navbar-nav' />
                         <Navbar.Collapse id='basic-navbar-nav'>
                             <SearchBox />
@@ -64,11 +69,8 @@ const Header = () => {
                                 <LinkContainer to='/'>
                                     <Nav.Link eventKey='default'>Home</Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to='/search/keyword'>
-                                    <Nav.Link
-                                        eventKey='products'
-                                        href='/products'
-                                    >
+                                <LinkContainer to='/search/keyword/all'>
+                                    <Nav.Link eventKey='products'>
                                         Shop
                                     </Nav.Link>
                                 </LinkContainer>

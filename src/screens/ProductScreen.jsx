@@ -109,14 +109,21 @@ const ProductScreen = () => {
                                     <ListGroup.Item>
                                         <Row>
                                             <Col>Author:</Col>
-                                            <Col>{product.author}</Col>
+                                            <Col>
+                                                {product.author?.author_name}
+                                            </Col>
                                         </Row>
                                     </ListGroup.Item>
 
                                     <ListGroup.Item>
                                         <Row>
                                             <Col>Category:</Col>
-                                            <Col>{product.category}</Col>
+                                            <Col>
+                                                {
+                                                    product.category
+                                                        ?.category_name
+                                                }
+                                            </Col>
                                         </Row>
                                     </ListGroup.Item>
 

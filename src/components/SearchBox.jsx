@@ -11,7 +11,7 @@ const SearchBox = () => {
         if (keyword.trim()) {
             navigate(`/search/keyword/${keyword}`)
         } else {
-            navigate("/")
+            navigate("/search/keyword/all")
         }
     }
 

@@ -2,11 +2,12 @@ import React, { useEffect } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import Loader from "../components/Loader"
-import { Row, Col, ListGroup, Card } from "react-bootstrap"
+import { Row, Col, ListGroup, Card, Image } from "react-bootstrap"
 import Message from "../components/Message"
 import { listSearchProducts } from "../actions/productActions"
 import Rating from "../components/Rating"
 import { ratings } from "../util"
+import Product from "../components/Product"
 
 const SearchScreen = () => {
     const navigate = useNavigate()
@@ -34,11 +35,15 @@ const SearchScreen = () => {
     const { loading, error, products } = productListSearch
 
     const getFilterUrl = (filter) => {
-        const filterCategory = filter.category || category
         const filterKeyword = filter.keyword || keyword
+        const filterCategory = filter.category || category
         const filterAuthor = filter.author || author
+        const filterRating = filter.rating || rating
+        const filterOrder = filter.order || order
+        const filterPerPage = filter.perPage || perPage
+        const filterPage = filter.page || page
 
-        return `/search/keyword/${filterKeyword}/category/${filterCategory}/author/${filterAuthor}`
+        return `/search/keyword/${filterKeyword}/category/${filterCategory}/author/${filterAuthor}/rating/${filterRating}/order/${filterOrder}/perPage/${filterPerPage}/page/${filterPage}`
     }
 
     useEffect(() => {
@@ -47,21 +52,21 @@ const SearchScreen = () => {
                 keyword: keyword !== "all" ? keyword : "",
                 category: category !== "all" ? category : "",
                 author: author !== "all" ? author : "",
-                sortOrder: "sale",
+                sortOrder: order !== "sale" ? order : "sale",
+                rating: rating !== 0 ? rating : 0,
+                perPage: perPage !== 5 ? perPage : 5,
+                page: page !== 1 ? page : 1,
             })
         )
-    }, [keyword, category, author, dispatch])
-    return (
+    }, [keyword, category, author, order, rating, perPage, page, dispatch])
+    return loading ? (
+        <Loader />
+    ) : error ? (
+        <Message variant='danger'>{error}</Message>
+    ) : (
         <>
-            <Row className='align-items-center'>
-                {loading ? (
-                    <Loader />
-                ) : error ? (
-                    <Message variant='danger'>{error}</Message>
-                ) : (
-                    <div className='mr-auto'>{products?.length} Results</div>
-                )}
-                <div className='text-right'>
+            <Row>
+                <div className='ml-auto'>
                     Sort by:
                     <select
                         value={order}
@@ -81,7 +86,7 @@ const SearchScreen = () => {
                 </div>
             </Row>
             <Row>
-                <Col md={2}>
+                <Col sm={4} md={3} lg={2}>
                     <h3>Category</h3>
                     <div>
                         {loadingCategories ? (
@@ -124,6 +129,14 @@ const SearchScreen = () => {
                     <div>
                         <h3>Author</h3>
                         <ListGroup>
+                            <ListGroup.Item>
+                                <Link
+                                    className={"all" === author ? "active" : ""}
+                                    to={getFilterUrl({ author: "all" })}
+                                >
+                                    Any
+                                </Link>
+                            </ListGroup.Item>
                             {authors.map((a) => (
                                 <ListGroup.Item key={a.id}>
                                     <Link
@@ -163,19 +176,23 @@ const SearchScreen = () => {
                         </ListGroup>
                     </div>
                 </Col>
-                <Col md={3}>
+                <Col sm={8} md={9} lg={10}>
                     {loading ? (
                         <Loader />
                     ) : error ? (
                         <Message variant='danger'>{error}</Message>
                     ) : (
                         <>
+                            <div>{products?.length} Results</div>
                             {products?.length > 0 ? (
-                                <Row md={3}>
+                                <Row sm={2} md={3} lg={4}>
                                     {products.map((product) => (
-                                        <h3 key={product.id}>
-                                            {product.book_title}
-                                        </h3>
+                                        <Link
+                                            key={product.id}
+                                            to={`/product/${product.id}`}
+                                        >
+                                            <Product product={product} />
+                                        </Link>
                                     ))}
                                 </Row>
                             ) : (

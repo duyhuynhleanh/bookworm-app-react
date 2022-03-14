@@ -18,7 +18,11 @@ const Product = ({ product }) => {
                 </Card.Title>
 
                 <Card.Text as='div'>
-                    <p>{product?.author_name}</p>
+                    {product?.author_name ? (
+                        <p>{product?.author_name}</p>
+                    ) : (
+                        <p>{product?.author?.author_name}</p>
+                    )}
                 </Card.Text>
                 <Card.Text as='h3'>${product.final_price}</Card.Text>
                 {product.book_price > product.final_price ? (

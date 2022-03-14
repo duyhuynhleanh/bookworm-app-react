@@ -37,10 +37,10 @@ const ProductCarousel = () => {
     ) : (
         <Carousel pause='hover' className='bg-light' variant='light'>
             {result.map((chunk) => (
-                <Carousel.Item key={chunk[0].id}>
-                    <Row>
+                <Carousel.Item as='div' key={chunk[0].id}>
+                    <Row sm={2} md={3} lg={4}>
                         {chunk.map((product) => (
-                            <Col key={product.id} sm={3}>
+                            <Col key={product.id}>
                                 <Link to={`/product/${product.id}`}>
                                     <Product product={product} />
                                 </Link>
