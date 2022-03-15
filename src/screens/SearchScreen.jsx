@@ -77,7 +77,24 @@ const SearchScreen = () => {
     ) : (
         <>
             <Row>
-                <Col md={8}>
+                <Col className='text-center'>
+                    Books filtered by category:{" "}
+                    {category !== "all"
+                        ? categories[category - 1]?.category_name
+                        : "all"}
+                </Col>
+                <Col className='text-center'>
+                    Books filtered by author:{" "}
+                    {author !== "all"
+                        ? authors[author - 1]?.author_name
+                        : "all"}
+                </Col>
+                <Col className='text-center'>
+                    Books filtered by rating: {rating !== 1 ? rating : 1}
+                </Col>
+            </Row>
+            <Row>
+                <Col className='text-left' md={8}>
                     <h3>
                         Showing {Number(per_page)} results from {from} to {to}{" "}
                         of {total}
@@ -118,9 +135,9 @@ const SearchScreen = () => {
             </Row>
             <Row>
                 <Col sm={4} md={3} lg={2}>
-                    <h3>Filter:</h3>
+                    <h3 className='text-center'>Filter</h3>
                     <>
-                        <h5>By category</h5>
+                        <h5 className='text-center'>By category</h5>
                         {loadingCategories ? (
                             <Loader />
                         ) : errorCategories ? (
@@ -159,7 +176,7 @@ const SearchScreen = () => {
                         )}
                     </>
                     <>
-                        <h5>By author</h5>
+                        <h5 className='text-center'>By author</h5>
                         {loadingAuthors ? (
                             <Loader />
                         ) : errorAuthors ? (
@@ -194,7 +211,7 @@ const SearchScreen = () => {
                         )}
                     </>
                     <>
-                        <h5>By rating</h5>
+                        <h5 className='text-center'>By rating</h5>
                         <ListGroup variant='flush'>
                             {ratings.map((r) => (
                                 <ListGroup.Item as='button' key={r.name}>
@@ -225,7 +242,7 @@ const SearchScreen = () => {
                         <>
                             {products?.length > 0 ? (
                                 <>
-                                    <Row sm={2} md={3} lg={4}>
+                                    <Row sm={1} md={2} lg={3}>
                                         {products.map((product) => (
                                             <Container key={product.id}>
                                                 <Product product={product} />
@@ -233,49 +250,29 @@ const SearchScreen = () => {
                                         ))}
                                     </Row>
 
-                                    {pages > 1 && (
-                                        <Row className='align-items-center'>
-                                            <Col lg='auto'>
-                                                {/* <Pagination>
-                                                    {[
-                                                        ...Array(pages).keys(),
-                                                    ].map((x) => (
-                                                        <LinkContainer
-                                                            className={
-                                                                x + 1 === page
-                                                                    ? "active"
-                                                                    : ""
-                                                            }
-                                                            key={x + 1}
-                                                            to={getFilterUrl({
-                                                                page: x + 1,
-                                                            })}
-                                                        >
-                                                            <Pagination.Item
-                                                                active={
-                                                                    x + 1 ===
-                                                                    page
-                                                                }
-                                                            >
-                                                                {x + 1}
-                                                            </Pagination.Item>
-                                                        </LinkContainer>
-                                                    ))}
-                                                </Pagination> */}
-                                                <MyPagination
-                                                    totPages={pages}
-                                                    currentPage={page}
-                                                    pageClicked={(ele) => {
-                                                        navigate(
-                                                            getFilterUrl({
-                                                                page: ele,
-                                                            })
-                                                        )
-                                                    }}
-                                                ></MyPagination>
-                                            </Col>
-                                        </Row>
-                                    )}
+                                    {pages &&
+                                        pages >
+                                            1(
+                                                <Row className='align-items-center'>
+                                                    <Col lg='auto'>
+                                                        <MyPagination
+                                                            totPages={pages}
+                                                            currentPage={page}
+                                                            pageClicked={(
+                                                                ele
+                                                            ) => {
+                                                                navigate(
+                                                                    getFilterUrl(
+                                                                        {
+                                                                            page: ele,
+                                                                        }
+                                                                    )
+                                                                )
+                                                            }}
+                                                        ></MyPagination>
+                                                    </Col>
+                                                </Row>
+                                            )}
                                 </>
                             ) : (
                                 <Message>No Products Found</Message>

@@ -81,6 +81,12 @@ const App = () => {
                             path='search/keyword/:keyword/category/:category/author/:author/rating/:rating/order/:order/perPage/:perPage/pageNumber/:pageNumber'
                             element={<SearchScreen />}
                         ></Route>
+                        <Route
+                            path='*'
+                            element={
+                                <Message variant='danger'>Not found</Message>
+                            }
+                        />
                     </Routes>
                 </Container>
             </main>

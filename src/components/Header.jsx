@@ -70,7 +70,7 @@ const Header = () => {
                                 <LinkContainer to='/'>
                                     <Nav.Link eventKey='default'>Home</Nav.Link>
                                 </LinkContainer>
-                                <LinkContainer to='/search/keyword/all/category/all/author/all/rating/0/order/sale/perPage/5/pageNumber/1'>
+                                <LinkContainer to='/search/keyword/all/category/all/author/all/rating/1/order/sale/perPage/5/pageNumber/1'>
                                     <Nav.Link eventKey='products'>
                                         Shop
                                     </Nav.Link>

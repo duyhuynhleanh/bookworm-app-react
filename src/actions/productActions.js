@@ -89,7 +89,7 @@ export const listSearchProducts =
 export const listSearchReviews =
     ({
         productId = "",
-        rating = 1,
+        rating = 0,
         sortOrder = "desc",
         paginate = 1,
         perPage = 5,

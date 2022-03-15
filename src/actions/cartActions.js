@@ -10,8 +10,8 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
             book_id: data.id,
             book_tittle: data.book_title,
             book_cover_photo: data.book_cover_photo
-                ? `/images/${data.book_cover_photo}.jpg`
-                : `/images/default.jpg`,
+                ? data.book_cover_photo
+                : null,
             price: data.final_price,
             quantity: qty,
         },

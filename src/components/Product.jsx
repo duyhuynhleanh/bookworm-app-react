@@ -18,7 +18,11 @@ const Product = ({ product }) => {
             <Card.Body>
                 <Link to={`/product/${product.id}`}>
                     <Card.Title as='div'>
-                        <strong>{product.book_title}</strong>
+                        <strong>
+                            {product.book_title.length > 25
+                                ? `${product.book_title.substring(0, 20)} ...`
+                                : product.book_title}
+                        </strong>
                     </Card.Title>
                 </Link>
 

@@ -12,7 +12,7 @@ const SearchBox = () => {
             navigate(`/search/keyword/${keyword}`)
         } else {
             navigate(
-                "/search/keyword/all/category/all/author/all/rating/0/order/sale/perPage/5/pageNumber/1"
+                "/search/keyword/all/category/all/author/all/rating/1/order/sale/perPage/5/pageNumber/1"
             )
         }
     }
