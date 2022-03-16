@@ -82,10 +82,13 @@ const Header = () => {
                                     <Nav.Link eventKey='cart'>
                                         <i className='fas fa-shopping-cart'></i>
                                         Cart (
-                                        {cartItems.reduce(
-                                            (acc, item) => acc + item.quantity,
-                                            0
-                                        )}
+                                        {cartItems?.length > 0
+                                            ? cartItems.reduce(
+                                                  (acc, item) =>
+                                                      acc + item.quantity,
+                                                  0
+                                              )
+                                            : 0}
                                         )
                                     </Nav.Link>
                                 </LinkContainer>

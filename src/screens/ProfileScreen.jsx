@@ -7,6 +7,8 @@ import Loader from "../components/Loader"
 import { getUserDetails, updateUserProfile } from "../actions/userActions"
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants"
 import { useNavigate } from "react-router-dom"
+import { listMyOrders } from "../actions/orderActions"
+import { LinkContainer } from "react-router-bootstrap"
 
 const ProfileScreen = () => {
     const [firstName, setFirstName] = useState("")
@@ -19,26 +21,31 @@ const ProfileScreen = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const userDetails = useSelector((state) => state.userDetails)
-    const { loading, error, user } = userDetails
-
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
     const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
     const { success } = userUpdateProfile
 
+    const userDetails = useSelector((state) => state.userDetails)
+    const { loading, error, user } = userDetails
+
+    const orderListMy = useSelector((state) => state.orderListMy)
+    const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
+    console.log(orders)
+
     useEffect(() => {
         if (!userInfo) {
             navigate("/")
         } else {
             if (!user) {
-                dispatch(getUserDetails())
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
+                dispatch(getUserDetails())
             } else {
-                setFirstName(user.first_name)
-                setLastName(user.last_name)
-                setEmail(user.email)
+                dispatch(listMyOrders())
+                setFirstName(userInfo.first_name)
+                setLastName(userInfo.last_name)
+                setEmail(userInfo.email)
             }
         }
     }, [dispatch, userInfo, user, success, navigate])
@@ -64,17 +71,20 @@ const ProfileScreen = () => {
             <Col md={3}>
                 <h2>User Profile</h2>
                 {message && <Message variant='danger'>{message}</Message>}
-                {success &&
-                    // <Message variant='success'>Đã cập nhật tài khoản</Message>
-                    toast('🦄 "Profile updated!"', {
-                        position: "bottom-right",
-                        autoClose: 3000,
-                        hideProgressBar: true,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    })}
+                {
+                    success && (
+                        <Message variant='success'>Profile updated!</Message>
+                    )
+                    // toast('🦄 "Profile updated!"', {
+                    //     position: "bottom-right",
+                    //     autoClose: 3000,
+                    //     hideProgressBar: true,
+                    //     closeOnClick: true,
+                    //     pauseOnHover: true,
+                    //     draggable: true,
+                    //     progress: undefined,
+                    // })
+                }
                 {loading ? (
                     <Loader />
                 ) : error ? (
@@ -137,6 +147,52 @@ const ProfileScreen = () => {
                             Update
                         </Button>
                     </Form>
+                )}
+            </Col>
+            <Col md={9}>
+                <h2>My orders</h2>
+                {loadingOrders ? (
+                    <Loader />
+                ) : errorOrders ? (
+                    <Message variant='danger'>{errorOrders}</Message>
+                ) : (
+                    <Table
+                        striped
+                        bordered
+                        hover
+                        responsive
+                        className='table-sm'
+                    >
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>ORDER DATE</th>
+                                <th>ORDER AMOUNT</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.map((order) => (
+                                <tr key={order.id}>
+                                    <td>{order.id}</td>
+                                    <td>{order.order_date.substring(0, 10)}</td>
+                                    <td>{`$${order.order_amount}`}</td>
+                                    <td>
+                                        <LinkContainer
+                                            to={`/order/${order.id}`}
+                                        >
+                                            <Button
+                                                className='btn-sm'
+                                                variant='light'
+                                            >
+                                                Detail page
+                                            </Button>
+                                        </LinkContainer>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
                 )}
             </Col>
         </Row>

@@ -13,6 +13,8 @@ import ProductScreen from "./screens/ProductScreen"
 import CartScreen from "./screens/CartScreen"
 import ProfileScreen from "./screens/ProfileScreen"
 import SearchScreen from "./screens/SearchScreen"
+import PlaceOrderScreen from "./screens/PlaceOrderScreen"
+import OrderScreen from "./screens/OrderScreen"
 import { getAllCategories, getAllAuthors } from "./actions/productActions"
 
 const App = () => {
@@ -81,6 +83,11 @@ const App = () => {
                             path='search/keyword/:keyword/category/:category/author/:author/rating/:rating/order/:order/perPage/:perPage/pageNumber/:pageNumber'
                             element={<SearchScreen />}
                         ></Route>
+                        <Route path='/order/:id' element={<OrderScreen />} />
+                        <Route
+                            path='/placeorder'
+                            element={<PlaceOrderScreen />}
+                        />
                         <Route
                             path='*'
                             element={

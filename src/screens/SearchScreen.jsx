@@ -242,7 +242,7 @@ const SearchScreen = () => {
                         <>
                             {products?.length > 0 ? (
                                 <>
-                                    <Row sm={1} md={2} lg={3}>
+                                    <Row sm={2} md={3} lg={3}>
                                         {products.map((product) => (
                                             <Container key={product.id}>
                                                 <Product product={product} />
@@ -250,29 +250,23 @@ const SearchScreen = () => {
                                         ))}
                                     </Row>
 
-                                    {pages &&
-                                        pages >
-                                            1(
-                                                <Row className='align-items-center'>
-                                                    <Col lg='auto'>
-                                                        <MyPagination
-                                                            totPages={pages}
-                                                            currentPage={page}
-                                                            pageClicked={(
-                                                                ele
-                                                            ) => {
-                                                                navigate(
-                                                                    getFilterUrl(
-                                                                        {
-                                                                            page: ele,
-                                                                        }
-                                                                    )
-                                                                )
-                                                            }}
-                                                        ></MyPagination>
-                                                    </Col>
-                                                </Row>
-                                            )}
+                                    {pages && pages > 1 ? (
+                                        <Row className='align-items-center'>
+                                            <Col lg='auto'>
+                                                <MyPagination
+                                                    totPages={pages}
+                                                    currentPage={page}
+                                                    pageClicked={(ele) => {
+                                                        navigate(
+                                                            getFilterUrl({
+                                                                page: ele,
+                                                            })
+                                                        )
+                                                    }}
+                                                ></MyPagination>
+                                            </Col>
+                                        </Row>
+                                    ) : null}
                                 </>
                             ) : (
                                 <Message>No Products Found</Message>

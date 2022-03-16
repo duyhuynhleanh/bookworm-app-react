@@ -17,8 +17,14 @@ import {
     authorListReducer,
     productRatingDetailsReducer,
     productListSearchReviewReducer,
+    productReviewCreateReducer,
 } from "./reducers/productReducers"
 import { cartReducer } from "./reducers/cartReducers"
+import {
+    orderCreateReducer,
+    orderDetailsReducer,
+    orderListMyReducer,
+} from "./reducers/orderReducers"
 
 const reducer = combineReducers({
     categoryList: categoryListReducer,
@@ -30,11 +36,15 @@ const reducer = combineReducers({
     productTopDiscount: productTopDiscountReducer,
     productListSearch: productListSearchReducer,
     productListSearchReview: productListSearchReviewReducer,
+    productReviewCreate: productReviewCreateReducer,
     productTopRecommend: productTopRecommendReducer,
     productTopPopular: productTopPopularReducer,
     productDetails: productDetailsReducer,
     productRatingDetails: productRatingDetailsReducer,
     cart: cartReducer,
+    orderCreate: orderCreateReducer,
+    orderDetails: orderDetailsReducer,
+    orderListMy: orderListMyReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")

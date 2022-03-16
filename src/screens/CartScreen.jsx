@@ -17,27 +17,27 @@ const CartScreen = () => {
 
     const cart = useSelector((state) => state.cart)
 
-    const { cartItems } = cart
+    const { cartItems = [] } = cart
 
     useEffect(() => {
         if (productId) {
             dispatch(addToCart(productId, qty))
         }
-    }, [dispatch, productId, qty])
+    }, [productId, dispatch, qty])
 
     const removeFromCartHandler = (id) => {
         dispatch(removeFromCart(id))
     }
 
     const checkoutHandler = () => {
-        navigate("/login?redirect=shipping")
+        navigate("/placeorder")
     }
 
     return (
         <Row>
             <Col md={8}>
                 <h1>Cart</h1>
-                {cartItems.length === 0 ? (
+                {cartItems?.length === 0 ? (
                     <Message>
                         Your cart is currently empty <Link to='/'>Back</Link>
                     </Message>
@@ -48,15 +48,19 @@ const CartScreen = () => {
                                 <Row>
                                     <Col md={2}>
                                         <Image
-                                            src={item.book_cover_photo}
-                                            alt={item.book_tittle}
+                                            src={
+                                                item.book_cover_photo
+                                                    ? `/images/${item.book_cover_photo}.jpg`
+                                                    : `/images/default.jpg`
+                                            }
+                                            alt={item.book_title}
                                             fluid
                                             rounded
                                         />
                                     </Col>
                                     <Col md={3}>
                                         <Link to={`/product/${item.book_id}`}>
-                                            {item.book_tittle}
+                                            {item.book_title}
                                         </Link>
                                     </Col>
                                     <Col md={2}>${item.price}</Col>

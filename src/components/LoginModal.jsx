@@ -8,9 +8,11 @@ const LoginModal = ({ show, toggle }) => {
             <Modal show={show} onHide={toggle} autoFocus>
                 <Modal.Header>
                     <Modal.Title>Login</Modal.Title>
-                    <Button size='sm' onClick={toggle}>
-                        <i className='fas fa-times'></i>
-                    </Button>
+                    {toggle && (
+                        <Button size='sm' onClick={toggle}>
+                            <i className='fas fa-times'></i>
+                        </Button>
+                    )}
                 </Modal.Header>
                 <Modal.Body>
                     <LoginForm />
